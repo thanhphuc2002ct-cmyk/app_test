@@ -49,7 +49,9 @@ export default function ControlScreen({ connectedDevice, sendCommand, receivedDa
     handleSendCommand(modeStr);
   };
 
+  // Xử lý phím mê cung, chỉ gửi lệnh khi ở Mode 4
   const handleMazeCommand = (cmd) => {
+    if (activeMode !== 4) return;
     if (cmd === '#') {
       handleSendCommand(cmd);
       setMazeSteps([]);
@@ -92,9 +94,9 @@ export default function ControlScreen({ connectedDevice, sendCommand, receivedDa
         ))}
       </View>
 
-      {activeMode === 4 && (
+      {activeMode >= 1 && activeMode <= 5 && (
         <View style={styles.controlBox}>
-          <Text style={styles.sectionTitle}>Điều khiển Mê Cung</Text>
+          <Text style={styles.sectionTitle}>Điều khiển Mê Cung (Chỉ Mode 4)</Text>
           <Text style={{textAlign: 'center', marginBottom: 10}}>Đã nhập: {mazeSteps.join(', ')}</Text>
           <View style={styles.dpad}>
             <TouchableOpacity style={styles.dirBtn} onPress={() => handleMazeCommand('U')}><Text>U</Text></TouchableOpacity>
@@ -107,15 +109,11 @@ export default function ControlScreen({ connectedDevice, sendCommand, receivedDa
           <TouchableOpacity style={styles.runBtn} onPress={() => handleMazeCommand('#')}>
             <Text style={styles.btnText}>Bắt đầu chạy (#)</Text>
           </TouchableOpacity>
-        </View>
-      )}
 
-      {activeMode === 5 && (
-        <View style={styles.controlBox}>
-          <Text style={styles.sectionTitle}>Đổi âm sắc</Text>
+          <Text style={[styles.sectionTitle, { marginTop: 20 }]}>Đổi âm sắc (Chỉ Mode 5)</Text>
           <View style={styles.row}>
             {['A', 'B', 'C'].map((note) => (
-              <TouchableOpacity key={note} style={styles.noteBtn} onPress={() => handleSendCommand(note)}>
+              <TouchableOpacity key={note} style={styles.noteBtn} onPress={() => { if (activeMode === 5) handleSendCommand(note); }}>
                 <Text style={styles.btnText}>Nốt {note}</Text>
               </TouchableOpacity>
             ))}
