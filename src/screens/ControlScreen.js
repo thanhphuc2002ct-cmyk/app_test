@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function ControlScreen({ connectedDevice, disconnectFromDevice, sendCommand, receivedData }) {
+export default function ControlScreen({ connectedDevice, sendCommand, receivedData, openScanner }) {
   const [activeMode, setActiveMode] = useState(1);
   const [mazeSteps, setMazeSteps] = useState([]);
   const [logs, setLogs] = useState([]);
@@ -62,9 +62,9 @@ export default function ControlScreen({ connectedDevice, disconnectFromDevice, s
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.deviceName}>Đã kết nối: {connectedDevice?.name}</Text>
-        <TouchableOpacity style={styles.disconnectBtn} onPress={disconnectFromDevice}>
-          <Text style={styles.btnText}>Ngắt kết nối</Text>
+        <Text style={styles.deviceName}>Đã kết nối: {connectedDevice ? connectedDevice.name : "Chưa kết nối"}</Text>
+        <TouchableOpacity style={styles.disconnectBtn} onPress={openScanner}>
+          <Text style={styles.btnText}>Bluetooth</Text>
         </TouchableOpacity>
       </View>
 
@@ -151,7 +151,7 @@ export default function ControlScreen({ connectedDevice, disconnectFromDevice, s
             <TouchableOpacity style={styles.padBtn} onPressIn={() => move(0, 1)} onPressOut={stopSending}><Text>Xoay Phải</Text></TouchableOpacity>
           </View>
           <View style={styles.padRow}>
-            <TouchableOpacity style={styles.padBtn} onPressIn={() => move(1, 1)} onPressOut={stopSending}><Text>Lùi Trái</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.padBtn} onPressIn={() => move(1, -1)} onPressOut={stopSending}><Text>Lùi Trái</Text></TouchableOpacity>
             <TouchableOpacity style={styles.padBtn} onPressIn={() => move(1, 0)} onPressOut={stopSending}><Text>Lùi</Text></TouchableOpacity>
             <TouchableOpacity style={styles.padBtn} onPressIn={() => move(1, 1)} onPressOut={stopSending}><Text>Lùi Phải</Text></TouchableOpacity>
           </View>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, paddingTop: 40, backgroundColor: '#f5f5f5' },
   header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
   deviceName: { fontSize: 16, fontWeight: 'bold' },
-  disconnectBtn: { backgroundColor: '#f44336', padding: 8, borderRadius: 5 },
+  disconnectBtn: { backgroundColor: '#2196F3', padding: 8, borderRadius: 5 },
   btnText: { color: 'white', fontWeight: 'bold' },
   sectionTitle: { fontSize: 16, fontWeight: 'bold', marginTop: 10, marginBottom: 5 },
   logContainer: { height: 120, backgroundColor: '#1e1e1e', padding: 10, borderRadius: 8 },

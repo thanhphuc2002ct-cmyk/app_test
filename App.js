@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import ControlScreen from './src/screens/ControlScreen';
 import ScanScreen from './src/screens/ScanScreen';
@@ -16,6 +16,8 @@ export default function App() {
     receivedData,
   } = useBLE();
 
+  const [showScanner, setShowScanner] = useState(false);
+
   // Yêu cầu quyền ngay khi mở ứng dụng
   useEffect(() => {
     requestPermissions();
@@ -23,18 +25,21 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {connectedDevice ? (
-        <ControlScreen
-          connectedDevice={connectedDevice}
-          disconnectFromDevice={disconnectFromDevice}
-          sendCommand={sendCommand}
-          receivedData={receivedData}
-        />
-      ) : (
+      {showScanner ? (
         <ScanScreen
           allDevices={allDevices}
-          connectToDevice={connectToDevice}
+          connectToDevice={(device) => { connectToDevice(device); setShowScanner(false); }}
           scanForPeripherals={scanForPeripherals}
+          connectedDevice={connectedDevice}
+          disconnectFromDevice={disconnectFromDevice}
+          closeScanner={() => setShowScanner(false)}
+        />
+      ) : (
+        <ControlScreen
+          connectedDevice={connectedDevice}
+          sendCommand={sendCommand}
+          receivedData={receivedData}
+          openScanner={() => setShowScanner(true)}
         />
       )}
     </SafeAreaView>
