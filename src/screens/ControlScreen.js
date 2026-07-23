@@ -153,6 +153,13 @@ export default function ControlScreen({ connectedDevice, sendCommand, receivedDa
             <TouchableOpacity style={styles.padBtn} onPressIn={() => move(1, 0)} onPressOut={stopSending}><Text>Lùi</Text></TouchableOpacity>
             <TouchableOpacity style={styles.padBtn} onPressIn={() => move(1, 1)} onPressOut={stopSending}><Text>Lùi Phải</Text></TouchableOpacity>
           </View>
+
+          <Text style={[styles.sectionTitle, { marginTop: 15, textAlign: 'center' }]}>Điều khiển Servo & Tự động</Text>
+          <View style={styles.padRow}>
+            <TouchableOpacity style={[styles.padBtn, { backgroundColor: '#FF9800' }]} onPressIn={() => handleSendCommand('LEFT')} onPressOut={() => handleSendCommand('STOP')}><Text>Quay Trái</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.padBtn, { backgroundColor: '#4CAF50' }]} onPress={() => handleSendCommand('X')}><Text>Auto (X)</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.padBtn, { backgroundColor: '#FF9800' }]} onPressIn={() => handleSendCommand('RIGHT')} onPressOut={() => handleSendCommand('STOP')}><Text>Quay Phải</Text></TouchableOpacity>
+          </View>
         </View>
       )}
     </View>
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
   dpad: { alignItems: 'center' },
   dirBtn: { backgroundColor: '#e0e0e0', padding: 20, margin: 5, borderRadius: 5, width: 60, alignItems: 'center' },
   runBtn: { backgroundColor: '#FF9800', padding: 15, borderRadius: 5, marginTop: 10, alignItems: 'center' },
-  noteBtn: { backgroundColor: '#673AB7', padding: 15, borderRadius: 5, width: 80, alignItems: 'center' },
+  noteBtn: { backgroundColor: '#5f2eb3', padding: 15, borderRadius: 5, width: 80, alignItems: 'center' },
   padBox: { marginTop: 10, padding: 10, backgroundColor: 'white', borderRadius: 10 },
   padRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 5 },
   padBtn: { flex: 1, height: 60, backgroundColor: '#007AFF', marginHorizontal: 5, justifyContent: 'center', alignItems: 'center', borderRadius: 8 },
