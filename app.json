@@ -23,7 +23,7 @@
         "android.permission.BLUETOOTH_ADMIN",
         "android.permission.BLUETOOTH_CONNECT"
       ],
-        "package": "com.phuc2002.testappa30.standalone"
+      "package": "com.phuc2002.testappa30.standalone"
     },
     "web": {
       "output": "static",
@@ -49,7 +49,8 @@
           ],
           "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,

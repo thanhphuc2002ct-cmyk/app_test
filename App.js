@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import ControlScreen from './src/screens/ControlScreen';
+import HomeScreen from './src/screens/HomeScreen';
 import ScanScreen from './src/screens/ScanScreen';
 import useBLE from './src/useBLE';
 
@@ -16,30 +17,43 @@ export default function App() {
     receivedData,
   } = useBLE();
 
-  const [showScanner, setShowScanner] = useState(false);
+  const [currentView, setCurrentView] = useState('HOME');
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Yêu cầu quyền ngay khi mở ứng dụng
   useEffect(() => {
     requestPermissions();
   }, []);
 
+  // Quản lý hiển thị các màn hình dựa trên state currentView
   return (
     <SafeAreaView style={styles.container}>
-      {showScanner ? (
+      {currentView === 'HOME' && (
+        <HomeScreen 
+          onSelectProduct={(product) => {
+            setSelectedProduct(product);
+            setCurrentView('CONTROL');
+          }} 
+        />
+      )}
+      {currentView === 'SCAN' && (
         <ScanScreen
           allDevices={allDevices}
-          connectToDevice={(device) => { connectToDevice(device); setShowScanner(false); }}
+          connectToDevice={(device) => { connectToDevice(device); setCurrentView('CONTROL'); }}
           scanForPeripherals={scanForPeripherals}
           connectedDevice={connectedDevice}
           disconnectFromDevice={disconnectFromDevice}
-          closeScanner={() => setShowScanner(false)}
+          closeScanner={() => setCurrentView('CONTROL')}
         />
-      ) : (
+      )}
+      {currentView === 'CONTROL' && (
         <ControlScreen
           connectedDevice={connectedDevice}
           sendCommand={sendCommand}
           receivedData={receivedData}
-          openScanner={() => setShowScanner(true)}
+          openScanner={() => setCurrentView('SCAN')}
+          goHome={() => setCurrentView('HOME')}
+          selectedProduct={selectedProduct}
         />
       )}
     </SafeAreaView>
